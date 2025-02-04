@@ -22,9 +22,20 @@ export async function POST(req) {
     return cookieString;
   }
   
+  await connectDB();
+  
   let loginCookie = GenrateRandomCookie();
 
-  await connectDB();
+  async function Cookie(){
+    let exsitingCookieIfAny = await User.findOne({cookie:{$eq:loginCookie}});
+    if (exsitingCookieIfAny == null){
+      return Cookie();
+    }
+    else{
+      return GenrateRandomCookie();
+    }
+  }
+
 
   const re = await req.json();
   console.log("received request:", re);
@@ -46,16 +57,9 @@ export async function POST(req) {
   // console.log(String(user));
   if (user) {
     // Respond with success
-
-    if (await User.findOne({cookie:{$eq:loginCookie}}) == null){
-    await User.updateOne({email},{cookie:loginCookie});
-    }
-
-    else{
-      loginCookie = GenrateRandomCookie(); // if it matched with an already existing cookie?
-      // Ostrich Algorithem ;)
-      await User.updateOne({email},{cookie:loginCookie});
-    }
+    
+    await User.updateOne({email},{cookie:loginCookie}); // login cookie will always be diffrent as fn Cookie will return unique value only
+    
     // cookiesToSave.save();
     return NextResponse.json({ cookies: {login:loginCookie}});
   } else {

@@ -19,7 +19,7 @@ export default function Home() {
   <div className="flex flex-column gap-x-5">
   <SideBar className=""/>
   
-  <div className="content w-[90%] ">
+  <div className="content w-[90%] ">  
   {content}
   </div>
 
