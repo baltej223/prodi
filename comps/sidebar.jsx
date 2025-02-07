@@ -9,8 +9,8 @@ export default function SideBar({ children , className}) {
       <div className={`flex h-screen ${className}`}>
         <SideBar_ />
         <SidebarInset className="flex-1">
-          <header className="flex h-14 items-center border-b px-4">
-            <SidebarTrigger />
+          <header className="flex h-10 items-center mx-5 fixed top-1 left-[2px] z-10 lg:hidden xl:hidden md:hidden border-black">
+          <SidebarTrigger className=''/>
           </header>
           <main className="flex-1 overflow-auto p-4">{children}</main>
         </SidebarInset>

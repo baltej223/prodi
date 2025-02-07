@@ -20,7 +20,6 @@ import { redirectTo } from "@/hooks/redirectTo";
 
 
 function Login(){
-
   useEffect(()=>{
     redirectTo();
   },[]);
