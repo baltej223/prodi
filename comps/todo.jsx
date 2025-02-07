@@ -40,9 +40,10 @@ export function TodoContent({ list = "today" }) {
     }
   }
 
-  const toggleComplete = async (id) => {
+  const toggleComplete = async (id, currentState) => {
+    currentState = currentState?false:true;
     try {
-      await isDone(id, list);
+      await isDone(id, list, currentState);
       setTodos(todos.map(todo =>
         todo._id === id ? { ...todo, isDone: !todo.isDone } : todo
       ))
@@ -112,7 +113,7 @@ export function TodoContent({ list = "today" }) {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => toggleImportant(todo._id)}
+              onClick={() => toggleImportant(todo._id, todo.isDone)}
               className={cn(
                 todo.isImportant ? "text-yellow-500" : "text-gray-400",
                 "hover:text-yellow-600"

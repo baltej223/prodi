@@ -16,6 +16,7 @@ import {
   SidebarInput,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
+import signout from "@/hooks/signout"
 
 const categories = [
   { name: "All Tasks", icon: ListTodo },
@@ -78,7 +79,7 @@ export function SideBar_() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-100">
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="mr-2 h-4 w-4" onClick={signout}/>
               Logout
             </SidebarMenuButton>
           </SidebarMenuItem>
