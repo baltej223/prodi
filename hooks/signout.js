@@ -15,7 +15,7 @@ export default function signout(){
                     }
                 }
             });
-            document.cookie = replace(requiredCookie, "");
+            document.cookie = document.cookie.replace(requiredCookie, "");
         }
         else{
             //already signed out
