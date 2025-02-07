@@ -1,5 +1,8 @@
 "use client";
 import CommandHandler from '@/hooks/commandHandler'
+import signout from './signout';
+import { redirectTo } from './redirectTo';
+
 export function isJson(str) {
     try {
       JSON.parse(str);
@@ -48,6 +51,8 @@ export function RequiredCookie(){
     }
     if (response.error) {
       alert("Error:", response.error);
+      signout();
+      redirectTo();
       return;
     }
     if (response.command) {
