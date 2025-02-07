@@ -107,7 +107,7 @@ export async function POST(req) {
         }
       }
     });
-    data.save();
+    data.save().then(()=>{console.log("Data saved successfully")});
     //------
 
     user.save().then(() => {
