@@ -41,16 +41,18 @@ export function TodoContent({ list = "today" }) {
   }
 
   const toggleComplete = async (id, currentState) => {
-    currentState = currentState?false:true;
+    console.log("state is ", currentState);
+    const newState = !currentState;
     try {
-      await isDone(id, list, currentState);
+      await isDone(id, list, newState);
       setTodos(todos.map(todo =>
-        todo._id === id ? { ...todo, isDone: !todo.isDone } : todo
-      ))
+        todo._id === id ? { ...todo, isDone: newState } : todo
+      ));
     } catch (error) {
-      console.error('Error toggling complete:', error)
+      console.error('Error toggling complete:', error);
     }
-  }
+  };
+  
   let [todoImportant, setTodoImporance] = useState(false);
   const toggleImportant = async (id) => {
     try {
@@ -102,7 +104,7 @@ export function TodoContent({ list = "today" }) {
           >
             <Checkbox 
               checked={todo.isDone}
-              onCheckedChange={() => toggleComplete(todo._id)}
+              onCheckedChange={() => toggleComplete(todo._id, todo.isDone)}
             />
             <span className={cn(
               "flex-grow text-sm sm:text-base",
