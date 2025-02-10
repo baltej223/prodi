@@ -19,7 +19,7 @@ export function TodoContent() {
     async function fetchTodos() {
       const response = await getTodos()
       if (response && response.todos && response.todos.lists && response.todos.lists[list]) {
-        setTodos(response.todos.lists[list])
+        setTodos(response.todos.lists[list]);
       }
     }
     fetchTodos()
@@ -30,12 +30,13 @@ export function TodoContent() {
 
     if (newTodo.trim()) {
       try {
-        const response = await addTodo(newTodo, false, false, list)
-        if (response.error) {
-          alert('Bad parameters, Todo list does not exist')
-        } else {
+        const response = await addTodo(newTodo, false, false, list);
+        console.log(response);
+        if(response && !response.error) {
           setTodos([...todos, { _id: response._id, todoTitle: newTodo, isImportant: false, isDone: false }])
           setNewTodo('')
+        } else {
+          console.error('Error: Invalid response from addTodo:', response);
         }
       } catch (error) {
         console.error('Error adding todo:', error)
@@ -57,9 +58,10 @@ export function TodoContent() {
   };
   
   let [todoImportant, setTodoImporance] = useState(false);
-  const toggleImportant = async (id) => {
+  const toggleImportant = async (id, currentState) => {
     try {
-      await markImportant(id, list);
+      const newState = !currentState;
+      await markImportant(id, list, newState);
       setTodos(todos.map(todo =>
         todo._id === id ? { ...todo, isImportant: !todo.isImportant } : todo
       ))

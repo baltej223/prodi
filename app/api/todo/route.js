@@ -186,6 +186,10 @@ export async function POST(req) {
   if (command == "todo.createlist") {
     let exisitingData = await udm.findOne({ email: userEmailAndModel }).exec();
     
+    if (!data.list) {
+      return NextResponse.json({ error: "List name is required" });
+    }
+
     if (exisitingData.todo.lists.has(data.list)) {
       return NextResponse.json({ message: "Todo list already exists" });
     }
@@ -203,4 +207,16 @@ export async function POST(req) {
     return NextResponse.json({ message: "List created Successfully" });
   }
 
+  if (command == "todo.send.lists") {
+    let exisitingData = await udm.findOne({ email: userEmailAndModel }).exec();
+    
+    if (!exisitingData || !exisitingData.todo || !exisitingData.todo.lists) {
+        return NextResponse.json({ error: "No lists found" });
+    }
+
+    // Get all keys from the Map
+    const listNames = Array.from(exisitingData.todo.lists.keys());
+
+    return NextResponse.json({ lists: listNames });
+}
 }

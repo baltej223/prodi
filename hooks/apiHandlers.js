@@ -46,7 +46,7 @@ export function RequiredCookie(){
     });
     response = await response.json();
     if (response.message) {
-      alert(response.message);
+      // alert(response.message);
       return;
     }
     if (response.error) {
@@ -69,16 +69,16 @@ export function RequiredCookie(){
       body: JSON.stringify({ cookie: RequiredCookie(), command: "todo.add", data: {todoTitle, isImportant, isDone, list} }),
     });
     response = await response.json();
-    console.log("response by the sever is", response);
+    // console.log("response by the sever is", response);
     if (response.message) {
-      alert(response.message);
-      return;
+      // alert(response.message);
+      return response;
     }
     if (response.error) {
       alert("Error:", response.error);
       alert("Error:", response.caughtError);
 
-      return;
+      return response;
     }
     if (response.command) {
       CommandHandler(response.command);
@@ -95,7 +95,7 @@ export function RequiredCookie(){
     });
     response = await response.json();
     if (response.message) {
-      alert(response.message);
+      // alert(response.message);
       return;
     }
     if (response.error) {
@@ -118,7 +118,7 @@ export function RequiredCookie(){
     });
     response = await response.json();
     if (response.message) {
-      alert(response.message);
+      // alert(response.message);
       return;
     }
     if (response.error) {
@@ -161,7 +161,7 @@ export function RequiredCookie(){
     });
     response = await response.json();
     if (response.message) {
-      alert(response.message);
+      // alert(response.message);
       return;
     }
     if (response.error) {
@@ -179,7 +179,7 @@ export function RequiredCookie(){
     let response = await fetch('/api/todo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cookie: RequiredCookie(), command: "todo.createlist", data:{listname}}),
+      body: JSON.stringify({ cookie: RequiredCookie(), command: "todo.createlist", data:{list:listname}}),
     });
     response = await response.json();
     if (response.message) {

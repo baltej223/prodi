@@ -18,24 +18,76 @@ import {
 import { Button } from "@/components/ui/button"
 
 import signout from "@/hooks/signout"
+import { createList, getLists } from "@/hooks/apiHandlers"
 
 const DUMMY_categories = [
-  { name: "All Tasks", uri:"all_tasks", icon: ListTodo },
-  { name: "Today",uri:"today", icon: Calendar },
-  { name: "Important",uri:"name", icon: Star },
+  { name: "All Tasks",    uri:"all_tasks",    icon: ListTodo },
+  { name: "Today",        uri:"today",        icon: Calendar },
+  { name: "Important",    uri:"important",    icon: Star },
 ]
 
-export function SideBar_({categories = DUMMY_categories, renderForlist, setListState}) {
+// function replaceAllSpaces(parentstring, auxillarystring){return parentstring.split(" ").join()}
+export function SideBar_({categories, renderForlist, setListState}) {
+
+  let setCategories;
+  [categories, setCategories] = React.useState(DUMMY_categories);
+
+    function setlists() {
+      getLists().then((response) => {
+      if (response && response.lists && sessionStorage.getItem("list")==null) {
+        response.lists.forEach((item, index) => {
+        let itemUri = item;
+        item = {};
+        
+        let itemName = itemUri.split("_").join(" "); // First replace underscores
+        itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1); // Then capitalize
+
+        item.name = itemName;
+        item.uri = itemUri;
+        
+        if (index === 0) {
+          item.icon = Star;
+        } else if (index === 1) {
+          item.icon = Calendar;
+        } else {
+          item.icon = ListTodo;
+        }
+        setCategories((cat) => [...cat, item]);
+        sessionStorage.setItem("list",item);
+        });
+      }
+      }).catch((error) => {
+      console.log("Error fetching lists:", error);
+      });
+    }
+
+    React.useEffect(() => {
+      setlists();
+    }, []);
+
   const [NewsList, setNewsList] = React.useState("")
 
-  const handleAddList = (e) => {
+   const handleAddList = async (e) => {
     e.preventDefault()
     // Add logic to add the task
-    console.log("Adding task:", NewsList)
+    console.log("Adding task:", NewsList);
+    try{
+      await createList(NewsList.toLowerCase().split(" ").join("_"));
+      setCategories((cat)=> [...cat,
+        {
+          name:NewsList,
+          uri:NewsList.toLowerCase().split(" ").join("_"),
+          icon:ListTodo
+        }
+      ]
+      );
+    }
+    catch(e)
+  {  console.log("Some error occured ",e);}
     setNewsList("")
   }
-  const handleClick =(listName)=>{
-    console.log("rhe");
+  const handleClick = (listName) =>{
+    // console.log("rhe");
     listName = listName.toString().toLowerCase();
     setListState(listName);
   }
