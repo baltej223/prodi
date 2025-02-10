@@ -52,7 +52,16 @@ export function SideBar_({categories, renderForlist, setListState}) {
         } else {
           item.icon = ListTodo;
         }
-        setCategories((cat) => [...cat, item]);
+        setCategories(
+          (cat) => {
+           if (!cat.includes(item)){
+            return [...cat, item]
+          }
+          else {
+            return cat;
+          }
+          }
+        );
         sessionStorage.setItem("list",item);
         });
       }
