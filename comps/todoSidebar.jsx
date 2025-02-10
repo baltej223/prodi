@@ -119,7 +119,7 @@ export function SideBar_({categories="", renderForlist, setListState}) {
   return (
     <Sidebar className="border-r">
       <SidebarHeader className="px-2 py-4">
-        <h2 className="px-4 text-lg font-semibold tracking-tight">{ renderForlist?`${String(renderForlist).charAt(0).toUpperCase() + String(renderForlist).slice(1)}` : "My Todo" }</h2>
+        <h2 className="px-4 text-lg font-semibold tracking-tight">{ renderForlist?`${(String(renderForlist).charAt(0).toUpperCase() + String(renderForlist).slice(1).split("_").join(" "))}` : "My Todo" }</h2>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
