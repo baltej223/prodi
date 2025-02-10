@@ -21,50 +21,65 @@ import signout from "@/hooks/signout"
 import { createList, getLists } from "@/hooks/apiHandlers"
 
 const DUMMY_categories = [
-  { name: "All Tasks",    uri:"all_tasks",    icon: ListTodo },
-  { name: "Today",        uri:"today",        icon: Calendar },
-  { name: "Important",    uri:"important",    icon: Star },
+  // { name: "All Tasks",    uri:"all_tasks",    icon: ListTodo },
+  // { name: "Today",        uri:"today",        icon: Calendar },
+  // { name: "Important",    uri:"important",    icon: Star },
 ]
 
 // function replaceAllSpaces(parentstring, auxillarystring){return parentstring.split(" ").join()}
-export function SideBar_({categories, renderForlist, setListState}) {
+export function SideBar_({categories="", renderForlist, setListState}) {
 
   let setCategories;
   [categories, setCategories] = React.useState(DUMMY_categories);
 
     function setlists() {
       getLists().then((response) => {
-      if (response && response.lists && sessionStorage.getItem("list")==null) {
-        response.lists.forEach((item, index) => {
-        let itemUri = item;
-        item = {};
-        
-        let itemName = itemUri.split("_").join(" "); // First replace underscores
-        itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1); // Then capitalize
+      console.log(response);
+      if (response && response.lists) {
+        // let item = {};
+        // response.lists.forEach((list, index)=>{
+        //     let itemUri = list;
+        //     item.uri=itemUri;
+        //     let itemName = itemUri.split("_").join(" "); // First replace underscores
+        //     itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1); // Then capitalize
+        //     item.name=itemName;
+        //     if (index==0){
+        //       item.icon = Star;
+        //     }
+        //     if (index==1){
+        //       item.icon=Calendar;
+        //     }
 
-        item.name = itemName;
-        item.uri = itemUri;
-        
-        if (index === 0) {
-          item.icon = Star;
-        } else if (index === 1) {
-          item.icon = Calendar;
-        } else {
-          item.icon = ListTodo;
-        }
-        setCategories(
-          (cat) => {
-           if (!cat.includes(item)){
-            return [...cat, item]
+      const newCategories = [];
+      response.lists.forEach((list, index) => {
+        let itemUri = list;
+        let itemName = list.split("_").join(" "); // First replace underscores
+        itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1); // Then capitalize
+        const item = {
+          uri: itemUri,
+          name: itemName,
+          icon: index === 0 ? Star : index === 1 ? Calendar : ListTodo,
+        };
+        newCategories.push(item);
+      });
+
+      console.log("New categories:", newCategories);
+
+      setCategories((cat) => {
+        let updatedCategories = [...cat];
+        newCategories.forEach((item) => {
+          if (!updatedCategories.some((cat) => cat.uri === item.uri)) {
+            updatedCategories = updatedCategories.concat(item);
           }
-          else {
-            return cat;
-          }
-          }
-        );
-        sessionStorage.setItem("list",item);
         });
-      }
+        console.log("Updated categories:", updatedCategories);
+        return updatedCategories;
+      });
+
+        sessionStorage.setItem("list", JSON.stringify(item));
+
+
+      } 
       }).catch((error) => {
       console.log("Error fetching lists:", error);
       });
@@ -82,7 +97,7 @@ export function SideBar_({categories, renderForlist, setListState}) {
     console.log("Adding task:", NewsList);
     try{
       await createList(NewsList.toLowerCase().split(" ").join("_"));
-      setCategories((cat)=> [...cat,
+      setCategories((_cat)=> [..._cat,
         {
           name:NewsList,
           uri:NewsList.toLowerCase().split(" ").join("_"),
