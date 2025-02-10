@@ -1,13 +1,13 @@
-import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
-import { SideBar_ } from "@/comps/todoSidebar"
-import React from "react" // Added import for React
+import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
+import { SideBar_ } from "@/comps/todoSidebar";
+import React from "react";
 
-export default function SideBar({ children , className}) {
+export default function SideBar({ children , className, categories, list, setListState}) {
   return (
     <div >
     <SidebarProvider>
       <div className={`flex h-screen ${className}`}>
-        <SideBar_ />
+        <SideBar_ categories={categories} renderForlist={list} setListState={setListState}/>
         <SidebarInset className="flex-1">
           <header className="flex h-10 items-center mx-5 fixed top-1 left-[2px] z-10 lg:hidden xl:hidden md:hidden border-black">
           <SidebarTrigger className=''/>

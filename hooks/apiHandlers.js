@@ -139,7 +139,7 @@ export function RequiredCookie(){
     });
     response = await response.json();
     if (response.message) {
-      alert(response.message);
+      // alert(response.message);
       return;
     }
     if (response.error) {

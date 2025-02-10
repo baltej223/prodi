@@ -14,7 +14,7 @@ export default function RouteTo(uri, setState) {
         tangledComponent: <TodoContent/>,
       },
       {
-        uri: "todo1",
+        uri: "loader",
         tangledIndex: 1,
         tangledComponent: "bye",
       },

@@ -1,29 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 import RouteTo from "@/hooks/router";
-import SideBar from "../comps/sidebar";
 import {redirectTo} from "@/hooks/redirectTo";
+import Loader from "@/comps/loader"
 
 export default function Home() {
   useEffect(() => {
-    redirectTo();
+     redirectTo();
   }, []);
-
   let [content, setContent] = useState("");
-  
+  useEffect(()=>{
+    setContent(<Loader/>);
+  },[]);
   RouteTo("todo", setContent);
-
-
-  return (
-  <>
-  <div className="flex flex-column gap-x-5">
-  <SideBar className=""/>
   
-  <div className="content w-[100%] ">  
-  {content}
-  </div>
-
-  </div>
-  </>
-  );
+  return (content);
+  
 }
