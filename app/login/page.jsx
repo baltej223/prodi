@@ -121,6 +121,11 @@ function Login(){
             </div>
           </form>
 
+          <div className="w-full flex gap-x-1 justify-center items-center pt-10">
+                  <span>Don't have an account? </span>
+                  <Link href="/create_account">Sign Up</Link>
+          </div>
+          
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
