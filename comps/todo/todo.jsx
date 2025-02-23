@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { getTodos, addTodo, deleteTodo, markImportant, isDone } from '@/hooks/apiHandlers'
-import SideBar from "@/comps/sidebar";
+import SideBar from "@/comps/todo/sidebar";
 
 
-export function TodoContent() {
+export function TodoContent({content}) { 
+  // content is a function to update the state; state is React.JSX which is being shown
   const [list, setList ] = useState("today");
   const [todos, setTodos] = useState([])
   const [newTodo, setNewTodo] = useState('')
@@ -81,9 +82,16 @@ export function TodoContent() {
 
   return (
     <div className='flex flex-column gap-x-5'>
-    <SideBar className="" list={list} setListState={setList}/>
+    <SideBar className="" list={list} setListState={setList} content={content}/>
+    {/* 
+    @params{
+    list : The list that you want to initialise page with.
+    setListState : its pased for giving sidebar power to change the list state basically change the current list
+    content : for knowing what is content and why it is passed you can check the starting of this function 
+    }
+    */}
 
-    <div className="w-full max-w-4xl mx-auto pt-10 pr-[2%] content w-[100%]">
+    <div className="w-full max-w-4xl  pt-10 pr-[2%] content w-[100%]">
       <h1 className="text-2xl font-bold mb-4">Todo List</h1>
       
       <form onSubmit={__addTodo} className="mb-4 flex gap-2">
