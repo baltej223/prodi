@@ -129,7 +129,6 @@ export function SideBar_({categories="", renderForlist, setListState, content}) 
           <SidebarGroupLabel>Categories</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <Loader/>
               {categories.map((category) => (
                 <SidebarMenuItem key={category.name}>
                   <SidebarMenuButton className="w-full justify-start">

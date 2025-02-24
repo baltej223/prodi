@@ -7,26 +7,26 @@ let UserSchema = new mongoose.Schema({
   cookie:String
 });
 // as server files can only export async functions
-let todoSchema =  new mongoose.Schema({ // I will have to export it as I want to make a new collection on userCreateAccount event
-  email:String,
-  todo:{
+// let todoSchema =  new mongoose.Schema({ // I will have to export it as I want to make a new collection on userCreateAccount event
+//   email:String,
+//   todo:{
 
-    lists:{
-      important:[{
-        todoTitle:String,
-        isImportant:Boolean,
-        isDone:Boolean,
-       }], 
-      today:[{
-        todoTitle:String,
-        isImportant:Boolean,
-        isDone:Boolean,
-      }]
-    }
+//     lists:{
+//       important:[{
+//         todoTitle:String,
+//         isImportant:Boolean,
+//         isDone:Boolean,
+//        }], 
+//       today:[{
+//         todoTitle:String,
+//         isImportant:Boolean,
+//         isDone:Boolean,
+//       }]
+//     }
 
-  }
-});
-
+//   }
+// });
+// This schema was never used, schema defination is at the time of creation of new account
 
 export let User = mongoose.models.userData || mongoose.model("userData", UserSchema, "userLogin");
 
@@ -50,7 +50,3 @@ if (!cached.promise) {
 cached.connection = await cached.promise;
 return cached.connection;
 };
-
-// Here I will check If collection corresponding to user email is not made, then make it
-
-// For each user
