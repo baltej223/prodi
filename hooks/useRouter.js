@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { TodoContent } from "@/comps/todo";
+import { TodoContent } from "@/comps/todo/todo";
+import Pomodoro from "@/comps/pomodoro/pomodoro";
 // import { Sidebar } from "@/app/comps/sidebar";
+import Pages from "@/comps/pages/pages";
 
-
-export default function RouteTo(uri, setState) {
+export default function useRouteTo(uri, setState) {
   let [index, setIndex] = useState(-1);
 
   const uris = useMemo(
@@ -11,17 +12,18 @@ export default function RouteTo(uri, setState) {
       {
         uri: "todo",
         tangledIndex: 0,
-        tangledComponent: <TodoContent/>,
+        tangledComponent: <TodoContent content={setState}/>, 
+        // passing param content is neccesary as it will provide power to <todoContent/> and sidebar to use RouteTo hook
       },
       {
-        uri: "loader",
+        uri: "pomodoro",
         tangledIndex: 1,
-        tangledComponent: "bye",
+        tangledComponent: <Pomodoro/>,
       },
       {
-        uri: "todo2",
+        uri: "pages",
         tangledIndex: 2,
-        tangledComponent: "",
+        tangledComponent: <Pages/>,
       },
       {
         uri: "todo3",
@@ -46,6 +48,4 @@ export default function RouteTo(uri, setState) {
       setState(tangledComponent);
     }
   }, [index, uris, setState]);
-
-  return null;
 }

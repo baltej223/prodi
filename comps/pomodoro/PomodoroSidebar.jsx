@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button"
 import signout from "@/hooks/signout"
 import { createList, getLists } from "@/hooks/apiHandlers"
 
+
 const DUMMY_categories = [
   // { name: "All Tasks",    uri:"all_tasks",    icon: ListTodo },
   // { name: "Today",        uri:"today",        icon: Calendar },
@@ -27,7 +28,7 @@ const DUMMY_categories = [
 ]
 
 // function replaceAllSpaces(parentstring, auxillarystring){return parentstring.split(" ").join()}
-export function SideBar_({categories="", renderForlist, setListState}) {
+export function SideBar_({categories="", renderForlist, setListState, content}) {
 
   let setCategories;
   [categories, setCategories] = React.useState(DUMMY_categories);
@@ -117,9 +118,10 @@ export function SideBar_({categories="", renderForlist, setListState}) {
   }
 
   return (
-    <Sidebar className="border-r">
+  <div className="flex flex-col">
+    <Sidebar className="border-r" side="left" collapsible="icon">
       <SidebarHeader className="px-2 py-4">
-        <h2 className="px-4 text-lg font-semibold tracking-tight">{ renderForlist?`${(String(renderForlist).charAt(0).toUpperCase() + String(renderForlist).slice(1).split("_").join(" "))}` : "My Todo" }</h2>
+          <h2 className="px-4 text-lg font-semibold tracking-tight">{ renderForlist?`${(String(renderForlist).charAt(0).toUpperCase() + String(renderForlist).slice(1).split("_").join(" "))}` : "My Todo" }</h2>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -177,6 +179,7 @@ export function SideBar_({categories="", renderForlist, setListState}) {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
+    </div>
   )
 }
 
