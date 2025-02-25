@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { connectDB, User } from '@/database.js';
 import mongoose from 'mongoose';
 import { headers } from 'next/headers';
-import { json } from 'express';
 
 await connectDB();
 

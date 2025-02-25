@@ -81,9 +81,11 @@ export async function POST(req) {
       },
       pages: {
         type: Map,
-        of: {
-          pageBody: String
-        }
+        of: [
+          {
+            pageBody:String
+          }
+        ]
       }
     });
 
