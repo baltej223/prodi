@@ -111,11 +111,12 @@ export async function POST(req) {
           ]
         }
       }, 
-      pages:{
-        pageTitle:{
-          pageBody:"page body"
-        }
-      }
+      pages: new Map().set("pageTitle",{pageBody:"page body"})
+      // {
+      //   pageTitle:{
+      //     pageBody:"page body"
+      //   }
+      // }
     });
 
     data.save();

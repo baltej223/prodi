@@ -40,7 +40,7 @@ export default function RightSidebar({setState}) {
         setCurrentUri(uri);
     };
   return (
-    <SidebarProvider>
+    <SidebarProvider className="h-0">
       <Sidebar side="right" collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>
@@ -74,6 +74,7 @@ export default function RightSidebar({setState}) {
         </SidebarContent>
         <SidebarRail />
       </Sidebar>
+
       <SidebarTrigger className="fixed bottom-4 right-4" />
     </SidebarProvider>
   )
