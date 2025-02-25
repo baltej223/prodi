@@ -8,36 +8,35 @@ export default function Pages() {
     const [pageTitle, setPageTitle] = useState('');
     const [pageContent, setPageContent] = useState("");
     const [error, setError] = useState(null);
+    const [_id, set_id]= useState("");
 
     // Define the loadPage function
-    const loadPage = async (title) => {
-        try {
-            const cookie = JSON.parse(document.cookie).loginCookie;
-            const response = await PagesApiHandler.getPage(title, cookie);
+    // const loadPage = async (title) => {
+    //     try {
+    //         const cookie = JSON.parse(document.cookie).loginCookie;
+    //         const response = await PagesApiHandler.getPage(title, cookie);
             
-            if (response && response.page) {
-                setPageTitle(response.page.title);
-                setPageContent(response.page.body);
-            }
-        } catch (err) {
-            setError(err.message);
-        }
-    };
+    //         console.log(response);
+
+    //         if (response && response.page) {
+    //             setPageTitle(response.page.title);
+    //             setPageContent(response.page.body);
+    //         }
+    //     } catch (err) {
+    //         setError(err.message);
+    //     }
+    // };
 
     useEffect(() => {
-        setStates(prevStates => {
-            const newStates = prevStates.filter(s => 
-                s.state !== pageTitle && 
-                s.state !== pageContent && 
-                typeof s.state !== 'function' // Remove old loadPage function
-            );
+        setStates(() => {
             return [
-                ...newStates,
-                { state: pageTitle, func: setPageTitle },
-                { state: pageContent, func: setPageContent },
-                { state: loadPage, func: null } // Add loadPage function to states
+                { "pageTitle": pageTitle, func: setPageTitle },
+                { "pageContent": pageContent, func: setPageContent },
+                // { "loadPage": loadPage, func: null }, 
+                { "_id":_id, func:set_id }
             ];
         });
+        console.log("states are", states)
     }, [pageTitle, pageContent]);
 
     return (

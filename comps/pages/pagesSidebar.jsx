@@ -17,99 +17,73 @@ import {
 import { Button } from "@/components/ui/button"
 import PagesApiHandler from "./pages.apihandler"
 
-const DUMMY_categories = [
-  { name: "All Tasks",    uri:"all_tasks",    icon: FileText },
-  { name: "Today",        uri:"today",        icon: FileText },
-  { name: "Important",    uri:"important",    icon: FileText },
-]
-let categories = DUMMY_categories;
-// function replaceAllSpaces(parentstring, auxillarystring){return parentstring.split(" ").join()}
 export function SideBar_({states, stateUpdationFunction}) {
 
-
-
+  let [pages, setPages] = React.useState([]);
+  const [newPageTitle, setNewPageTitle] = React.useState("");
+  const [error, setError] = React.useState(null);
   // api handler here
+
   const cookie = JSON.parse(document.cookie).loginCookie;
 
-  // Find pages state from states array
-  console.log(states);
-  const pagesState = states.find(s => s.state && Array.isArray(s.state));
-  const pages = pagesState ? pagesState.state : [];
-
-  // Update the main state with new pages
-  const setPages = (newPages) => {
-    stateUpdationFunction(prevStates => {
-      const newStates = prevStates.filter(s => 
-        !Array.isArray(s.state) // Remove old pages state
-      );
-      return [
-        ...newStates,
-        { state: newPages, func: setPages }
-      ];
-    });
-  };
-
-  // Keep error handling local as it's UI specific
-  const [error, setError] = React.useState(null);
-
   React.useEffect(() => {
-    async function fetchPages() {
+    async function fetchTitles() {
       try {
         const response = await PagesApiHandler.getTitles(cookie);
         if (PagesApiHandler.isValidResponse(response)) {
-          setPages(response.titles);
+          // Clear previous pages and properly map the titles to the expected format
+          let pageArr = response.titles.map(title => ({
+            pageTitle: title
+          }));
+          setPages(pageArr);
         }
       } catch (error) {
-        setError(error.message);
+        console.log(error.message);
       }
     }
-    fetchPages();
+    fetchTitles();
   }, []);
 
-  // Rest of your handlers remain the same but use the new setPages
+  const handleGetPage = async (page) => {
+    try {
+      const response = await PagesApiHandler.getPage(page.pageTitle, cookie);
+      if (PagesApiHandler.isValidResponse(response) && response.page) {
+        // Update parent component's state using the provided state updation function
+        if (stateUpdationFunction) {
+          stateUpdationFunction(prev => {
+            const newState = [...prev];
+            const pageTitleState = newState.find(s => Object.keys(s)[0] === "pageTitle");
+            const pageContentState = newState.find(s => Object.keys(s)[0] === "pageContent");
+            const idState = newState.find(s => Object.keys(s)[0] === "_id");
+            
+            if (pageTitleState) pageTitleState.func(response.page.title);
+            if (pageContentState) pageContentState.func(response.page.body);
+            if (idState && response.page._id) idState.func(response.page._id);
+            
+            return newState;
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const handleCreatePage = async (title) => {
     try {
-      const response = await PagesApiHandler.createPage(title, cookie);
+      const response = await PagesApiHandler.createPage(title, "", cookie.toString());
+      console.log("using Cookie:", cookie);
       if (PagesApiHandler.isValidResponse(response)) {
-        setPages([...pages, title]);
+        // Add the new page to the pages state
+        setPages(prevPages => [...prevPages, { pageTitle: title }]);
+        // Clear any previous errors
+        console.log(null);
       }
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      console.log(err.message);
+      console.log("using Cookie:", cookie);
     }
   };
-
-
-  const handleDeletePage = async (page) => {
-    try {
-      const response = await PagesApiHandler.deletePage(page._id, cookie);
-      if (PagesApiHandler.isValidResponse(response)) {
-        setPages(pages.filter(p => p._id !== page._id));
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-  
-
-  const [newPageTitle, setNewPageTitle] = React.useState("");
-  
-  const handleGetPage = async (page) => {
-    if (!loadPage) {
-      setError("Page loading function not available");
-      return;
-    }
-
-    try {
-      await loadPage(page);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-  
-   // Find the loadPage function from states
-   const loadPageState = states.find(s => typeof s.state === 'function');
-   const loadPage = loadPageState ? loadPageState.state : null;
-   
 
   return (
     <div className="flex flex-col">
@@ -128,21 +102,17 @@ export function SideBar_({states, stateUpdationFunction}) {
                   </SidebarMenuItem>
                 )}
                 
-                {pages.map((page) => (
-                  <SidebarMenuItem key={page}>
+                {pages.map((page, index) => (
+                  <SidebarMenuItem key={index}>
                     <SidebarMenuButton 
-                      className={`w-full justify-start ${
-                        states.find(s => s.state === page)?.state === page 
-                          ? 'bg-gray-100' 
-                          : ''
-                      }`}
+                      className={`w-full justify-start`}
                     >
                       <FileText className="mr-2 h-4 w-4" />
                       <Button 
                         variant="ghost" 
                         onClick={() => handleGetPage(page)}
                       >
-                        {page}
+                        {page.pageTitle}
                       </Button>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -172,7 +142,7 @@ export function SideBar_({states, stateUpdationFunction}) {
                   type="submit" 
                   size="sm" 
                   className="mt-2 w-full"
-                  // disabled={!newPageTitle.trim()}
+                  disabled={!newPageTitle.trim()}
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   Add New Page
@@ -197,4 +167,3 @@ export function SideBar_({states, stateUpdationFunction}) {
     </div>
   )
 }
-
