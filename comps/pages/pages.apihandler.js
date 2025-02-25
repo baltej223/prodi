@@ -1,14 +1,14 @@
 export default class PagesApiHandler {
     static async #makeRequest(endpoint, command, cookie, data = null) {
-        if (!endpoint || typeof endpoint !== 'string') {
+        if (!endpoint || typeof endpoint != 'string') {
             throw new Error('Invalid endpoint');
         }
-        if (!command || typeof command !== 'string') {
+        if (!command || typeof command != 'string') {
             throw new Error('Invalid command');
         }
-        if (!cookie || typeof cookie !== 'string') {
-            throw new Error('Invalid cookie');
-        }
+        // if (!cookie || typeof cookie != 'string') {
+        //     throw new Error('Invalid cookie');
+        // }
 
         try {
             const requestBody = {

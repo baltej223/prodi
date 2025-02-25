@@ -23,8 +23,10 @@ export function SideBar_({states, stateUpdationFunction}) {
   const [newPageTitle, setNewPageTitle] = React.useState("");
   const [error, setError] = React.useState(null);
   // api handler here
-
-  const cookie = JSON.parse(document.cookie).loginCookie;
+  let cookie;  
+  React.useEffect(()=>{
+    cookie = JSON.parse(document.cookie).loginCookie;
+    },[]);
 
   React.useEffect(() => {
     async function fetchTitles() {
@@ -38,7 +40,7 @@ export function SideBar_({states, stateUpdationFunction}) {
           setPages(pageArr);
         }
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
       }
     }
     fetchTitles();
@@ -65,23 +67,23 @@ export function SideBar_({states, stateUpdationFunction}) {
         }
       }
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
     }
   };
 
   const handleCreatePage = async (title) => {
     try {
       const response = await PagesApiHandler.createPage(title, "", cookie.toString());
-      console.log("using Cookie:", cookie);
+      console.error("using Cookie:", cookie);
       if (PagesApiHandler.isValidResponse(response)) {
         // Add the new page to the pages state
         setPages(prevPages => [...prevPages, { pageTitle: title }]);
         // Clear any previous errors
-        console.log(null);
+        console.error(null);
       }
     } catch (err) {
-      console.log(err.message);
-      console.log("using Cookie:", cookie);
+      console.error(err.message);
+      console.error("using Cookie:", cookie);
     }
   };
 
