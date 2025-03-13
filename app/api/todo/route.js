@@ -196,6 +196,26 @@ export async function POST(req) {
 
     exisitingData.todo.lists.set(data.list, []);
 
+    
+    let callStack = 0; 
+    async function CreateListDB(email, UpdatedTodo){
+      await udm.updateOne({ email: email }, {
+        todo: UpdatedTodo
+      });
+
+      if (callStack==100){
+        return 0;
+      }
+
+      if (!udm.findOne(email, exisitingData.todo)){
+        callStack++;
+        return CreateListDB();
+      }
+      else{
+        return 1;
+      }
+    }
+
     try {
       await udm.updateOne({ email: userEmailAndModel }, {
         todo: exisitingData.todo

@@ -7,3 +7,5 @@
 ## Already done:
 - The pages which are already there are fetched and rendered
 - There exist a master state which contains all the other states which handles all the states
+
+## Make the backend truly Async, And make it fast, Its dam Slow, it can be done by making a array based caching system.: 
