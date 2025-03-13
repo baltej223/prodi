@@ -1,8 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { TodoContent } from "@/comps/todo/todo";
-import Pomodoro from "@/comps/pomodoro/pomodoro";
 // import { Sidebar } from "@/app/comps/sidebar";
-import Pages from "@/comps/pages/pages";
 
 export default function useRouteTo(uri, setState) {
   let [index, setIndex] = useState(-1);
@@ -18,12 +16,12 @@ export default function useRouteTo(uri, setState) {
       {
         uri: "pomodoro",
         tangledIndex: 1,
-        tangledComponent: <Pomodoro/>,
+        tangledComponent: <></>,
       },
       {
         uri: "pages",
         tangledIndex: 2,
-        tangledComponent: <Pages/>,
+        tangledComponent: <></>,
       },
       {
         uri: "todo3",
