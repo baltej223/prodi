@@ -2,8 +2,7 @@
 import { useState, useEffect } from "react";
 import useRouteTo from "@/hooks/useRouter";
 import {redirectTo} from "@/hooks/redirectTo";
-import Loader from "@/comps/loader"
-import RightSidebar from "@/comps/rightSidebar";
+import Loader from "@/comps/loader";
 
 export default function Home() {
   useEffect(() => {
@@ -18,7 +17,6 @@ export default function Home() {
   return (
     <>
     {content}
-    <RightSidebar setState={setContent}/>
     </>
   );
   
