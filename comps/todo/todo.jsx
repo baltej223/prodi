@@ -17,13 +17,13 @@ export function TodoContent({content}) {
   const [newTodo, setNewTodo] = useState('')
 
   useEffect(() => {
-    async function fetchTodos() {
-      const response = await getTodos()
-      if (response && response.todos && response.todos.lists && response.todos.lists[list]) {
-        setTodos(response.todos.lists[list]);
+    async function fetchTodos(list) {
+      const response = await getTodos(list)
+      if (response && response.todos) {
+        setTodos(response.todos);
       }
     }
-    fetchTodos()
+    fetchTodos(list)
   }, [list])
 
   const __addTodo = async (e) => {

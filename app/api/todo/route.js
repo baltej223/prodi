@@ -111,17 +111,26 @@ export async function POST(req) {
   }
 
   if (command == "todo.send") {
+    if (!data.list) {
+      return NextResponse.json({ error: "List name is required" }, { status: 400 });
+    }
+    
     let exisitingData;
     try {
       exisitingData = await udm.findOne({ email: userEmailAndModel }).exec();
       if (!exisitingData) {
-        return NextResponse.json({ error: "No data found" });
+        return NextResponse.json({ error: "No data found" }, { status: 404 });
       }
+      
+      if (!exisitingData.todo.lists.has(data.list)) {
+        return NextResponse.json({ error: "Todo list not found" }, { status: 404 });
+      }
+      
+      const listTodos = exisitingData.todo.lists.get(data.list);
+      return NextResponse.json({ todos: listTodos });
     } catch (e) {
-      return NextResponse.json({ error: "Error retrieving todos", caughtError: e.message });
+      return NextResponse.json({ error: "Error retrieving todos", caughtError: e.message }, { status: 500 });
     }
-
-    return NextResponse.json({ todos: exisitingData.todo });
   }
 
   if (command == "todo.important") {

@@ -38,11 +38,11 @@ export function RequiredCookie(){
   }
   }
   
-  export async function getTodos() {
+  export async function getTodos(list) {
     let response = await fetch('/api/todo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cookie: RequiredCookie(), command: "todo.send" }),
+      body: JSON.stringify({ cookie: RequiredCookie(), command: "todo.send" , data:{list}}),
     });
     response = await response.json();
     if (response.message) {
