@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectDB, User } from '@/database.js';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 export async function POST(req) {
 
@@ -60,8 +60,15 @@ export async function POST(req) {
     
     await User.updateOne({email},{cookie:loginCookie}); // login cookie will always be diffrent as fn Cookie will return unique value only
     
+    const d = new Date();
+    let exdays = 3; // save cookie for 3 days
+    let cookieToSaveForTime = d.setTime(d.getTime() + (exdays*24*60*60*1000));
     // cookiesToSave.save();
-    return NextResponse.json({ cookies: {login:loginCookie}});
+    return NextResponse.json({message:"Successful"} , {
+      headers:{
+        "Set-Cookie":`login=${loginCookie}; expires=${cookieToSaveForTime}; path=/`
+      }
+    });
   } else {
     // Respond with error
     return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });

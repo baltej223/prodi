@@ -8,6 +8,7 @@ export default function Home() {
   useEffect(() => {
      redirectTo();
   }, []);
+  
   let [content, setContent] = useState("");
   useEffect(()=>{
     setContent(<Loader/>);

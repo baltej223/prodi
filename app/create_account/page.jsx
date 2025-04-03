@@ -36,7 +36,7 @@ function Signup() {
       if (res_json.cookie && res_json.cookie.loginCookie) {
         document.cookie = JSON.stringify(res_json.cookie);
         alert("Signup successful!");
-        redirectTo();
+        // redirectTo();
       }
       else if (res_json.message){
         alert(res_json.message);

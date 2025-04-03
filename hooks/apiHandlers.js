@@ -19,16 +19,10 @@ export function RequiredCookie(){
     let requiredCookie = "";
   
     cookies.forEach(cookie => {
-        if (isJson(cookie)) {
-            try {
-                let parsedCookie = JSON.parse(cookie.trim()); // Ensure extra spaces are removed
-                if (parsedCookie.loginCookie) {
-                    requiredCookie = parsedCookie.loginCookie;
-                }
-            } catch (e) {
-                // Error parsing cookie
-            }
-        }
+      let [cookieName, cookieValue] = cookie.split("=");
+      if (cookieName.trim() == "login"){
+        requiredCookie =  cookieValue.trim();
+      }
     });
     return requiredCookie;
   }
@@ -37,6 +31,7 @@ export function RequiredCookie(){
     return;
   }
   }
+
   
   export async function getTodos(list) {
     let response = await fetch('/api/todo', {

@@ -1,33 +1,20 @@
 import { redirect } from "next/navigation";
 
-export function isJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-
-
 export function redirectTo() {
     if (document.cookie) {
         let cookies = document.cookie.split(";");
         let requiredCookie = "";
 
+        console.log(cookies);
+        
         cookies.forEach(cookie => {
-            if (isJson(cookie)) {
-                try {
-                    let parsedCookie = JSON.parse(cookie.trim()); // Ensure extra spaces are removed
-                    if (parsedCookie.loginCookie) {
-                        requiredCookie = parsedCookie.loginCookie;
-                    }
-                } catch (e) {
-                    // Error parsing cookie
-                }
+            let [cookieName, cookieValue] = cookie.split("=");
+            if (cookieName.trim() == "login"){
+                requiredCookie = cookieValue;
             }
         });
 
+        console.log(requiredCookie);
         let currentURL = new URL(window.location.href);
         if (requiredCookie !== "") {
             if (currentURL.pathname !== "/") {

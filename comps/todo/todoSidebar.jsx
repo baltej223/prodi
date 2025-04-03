@@ -173,8 +173,10 @@ export function SideBar_({categories="", renderForlist, setListState, content}) 
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-100">
-              <LogOut className="mr-2 h-4 w-4" onClick={signout}/>
-              Logout
+              <LogOut className="mr-2 h-4 w-4"/>
+              <Button variant="link" onClick={signout}>
+                Logout
+              </Button>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

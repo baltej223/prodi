@@ -36,14 +36,15 @@ function Login(){
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, password: password }),
     });
-    let res_json = await response.json();
-    console.log(res_json);
-    if (!res_json.error){
-    document.cookie = JSON.stringify({loginCookie:res_json.cookies.login});
-    }
-    else{
-      alert(res_json.error);
-    }
+    // Today im unpdating it, and I am changing it to use NextResponce.cookie for cookies 
+    // let res_json = await response.json();
+    // console.log(res_json);
+    // if (!res_json.error){
+    // document.cookie = JSON.stringify({loginCookie:res_json.cookies.login});
+    // }
+    // else{
+    //   alert(res_json.error);
+    // }
     redirectTo();
   }
   return(
