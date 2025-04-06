@@ -127,7 +127,7 @@ export async function POST(req) {
       }
       
       const listTodos = exisitingData.todo.lists.get(data.list);
-      return NextResponse.json({ todos: listTodos });
+      return NextResponse.json({ todos: listTodos.reverse() });
     } catch (e) {
       return NextResponse.json({ error: "Error retrieving todos", caughtError: e.message }, { status: 500 });
     }

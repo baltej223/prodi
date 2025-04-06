@@ -34,7 +34,7 @@ export function TodoContent({content}) {
         const response = await addTodo(newTodo, false, false, list);
         console.log(response);
         if(response && !response.error) {
-          setTodos([...todos, { _id: response._id, todoTitle: newTodo, isImportant: false, isDone: false }])
+          setTodos([{_id: response._id, todoTitle: newTodo, isImportant: false, isDone: false },...todos])
           setNewTodo('')
         } else {
           console.error('Error: Invalid response from addTodo:', response);
