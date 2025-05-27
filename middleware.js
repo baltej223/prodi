@@ -8,7 +8,7 @@ export function middleware(req) {
 
   // console.log(req.nextUrl.hostname);
 
-  if (req.nextUrl.hostname != "prodi.vercel.app" && req.nextUrl.hostname != "localhost"){
+  if (req.nextUrl.hostname != "prodi.vercel.app" && req.nextUrl.hostname != "localhost" && req.nextUrl.hostname != "prodi.baltej.me"){
     return new NextResponse(`Not Allowed from ${req.nextUrl.hostname} hostname`);
   }
   Auth(req);
